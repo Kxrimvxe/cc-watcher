@@ -1,1 +1,2 @@
 {"ts":"2026-05-05T01:01:00.314Z","baseline_before":"force_baseline=2.1.126","latest_after":"2.1.128","new_versions":[],"subscribers":[],"duration_ms":353}
+{"ts":"2026-05-05T01:04:28.293Z","baseline_before":"2.1.126","latest_after":"2.1.128","new_versions":["2.1.128"],"subscribers":[{"slug":"tcg-portal","status":"updated","entries_added":37,"pending":12,"acknowledged":25,"versions":["2.1.128"]}],"duration_ms":2459}
