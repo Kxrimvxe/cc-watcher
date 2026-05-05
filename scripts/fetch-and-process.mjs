@@ -60,8 +60,14 @@ function parseChangelog(markdown) {
 // --- relevance scoring ---
 function scoreRelevance(bulletText, keywords) {
   const matched = [];
-  const lowerBullet = bulletText.toLowerCase();
+  const lowerBullet = String(bulletText).toLowerCase();
   for (const kw of keywords) {
+    // Skip non-string keywords (e.g. YAML parsed `context: fork` as object).
+    // Warn rather than crash so one bad keyword can't kill the whole run.
+    if (typeof kw !== 'string') {
+      console.warn(`Skipping non-string keyword: ${JSON.stringify(kw)}`);
+      continue;
+    }
     if (lowerBullet.includes(kw.toLowerCase())) matched.push(kw);
   }
   return matched;
