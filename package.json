@@ -1,0 +1,17 @@
+{
+  "name": "cc-watcher",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Daily Claude Code changelog watcher for cross-project subscribers",
+  "scripts": {
+    "fetch": "node scripts/fetch-and-process.mjs",
+    "backfill": "node scripts/backfill.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

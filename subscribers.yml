@@ -1,0 +1,17 @@
+# Initial subscriber list. Add new projects by appending entries.
+#
+# Each subscriber must:
+#   1. Commit a `.cc-watcher.yml` to its repo at `config_path`
+#   2. Provide a fine-grained PAT (contents: write on the subscriber repo) as a
+#      cc-watcher secret named SUBSCRIBER_PAT_<SLUG_UPPER_SNAKE>
+#      Example: slug=tcg-portal -> SUBSCRIBER_PAT_TCG_PORTAL
+#
+# The SLUG_UPPER_SNAKE transformation: kebab-case -> UPPER_SNAKE_CASE.
+# tcg-portal -> TCG_PORTAL
+# trading-strategy -> TRADING_STRATEGY
+
+subscribers:
+  - slug: tcg-portal
+    repo: Kxrimvxe/tcg-portal
+    branch: main
+    config_path: .cc-watcher.yml
