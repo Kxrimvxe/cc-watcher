@@ -2,9 +2,10 @@ name: daily-fetch
 
 on:
   schedule:
-    # 03:30 UTC daily = 05:30 CEST. Anthropic typically publishes during US hours
-    # so by 03:30 UTC any same-day release is captured the next morning CEST.
-    - cron: '30 3 * * *'
+    # Every 15 minutes — near-real-time polling. ~96 runs/day, vast majority
+    # no-op in <5 sec (fetch CHANGELOG.md, diff, exit). Catches new Anthropic
+    # releases within ~15 min of publish. Well within free-tier GHA budget.
+    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       force_baseline:
@@ -55,15 +56,3 @@ jobs:
           else
             echo "No state changes to commit."
           fi
-
-      - name: Notify Slack — success
-        if: success()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: node scripts/notify-slack.mjs success "${{ steps.process.outputs.run_summary }}"
-
-      - name: Notify Slack — failure
-        if: failure()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: node scripts/notify-slack.mjs failure "Run failed — check ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
