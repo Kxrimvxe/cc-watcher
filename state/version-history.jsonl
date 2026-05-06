@@ -4,3 +4,4 @@
 {"ts":"2026-05-06T14:43:08.283Z","baseline_before":"2.1.128","latest_after":"2.1.131","new_versions":["2.1.129","2.1.131"],"subscribers":[{"slug":"tcg-portal","status":"skipped","reason":".cc-watcher.yml not found in Kxrimvxe/tcg-portal@main","entries_added":0}],"duration_ms":423}
 {"ts":"2026-05-06T14:49:04.835Z","baseline_before":"2.1.131","latest_after":"2.1.131","new_versions":[],"subscribers":[],"duration_ms":459}
 {"ts":"2026-05-06T14:54:37.051Z","baseline_before":"2.1.128","latest_after":"2.1.131","new_versions":["2.1.129","2.1.131"],"subscribers":[{"slug":"tcg-portal","status":"updated","entries_added":29,"pending":8,"acknowledged":21,"versions":["2.1.129","2.1.131"]}],"duration_ms":2636}
+{"ts":"2026-05-06T16:14:07.695Z","baseline_before":"2.1.131","latest_after":"2.1.131","new_versions":[],"subscribers":[],"duration_ms":308}
