@@ -155,7 +155,39 @@ async function processSubscriber(sub, newBlocks, runTimestamp) {
   // 3. Append to pending-review JSONL
   const existing = await ghGetContent(sub.repo, sub.branch, config.pending_review_path, pat);
   const existingContent = existing?.content || '';
-  const newJsonlLines = entries.map(e => JSON.stringify(e)).join('\n');
+
+  // 3a. Entry-level dedup — filter out entries already present in pending-review.
+  // Defends against duplicate appends caused by FORCE_BASELINE backfill, state-push
+  // race conditions, or any pathway that re-processes an already-processed version.
+  // Dedup key: `${version}|${text}` — bullet text is unique per version.
+  const existingKeys = new Set();
+  if (existingContent) {
+    for (const line of existingContent.split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        if (e.version && e.text) {
+          existingKeys.add(`${e.version}|${e.text}`);
+        }
+      } catch { /* skip malformed lines — never crash on bad jsonl */ }
+    }
+  }
+  const dedupedEntries = entries.filter(
+    e => !existingKeys.has(`${e.version}|${e.text}`)
+  );
+  const duplicatesSkipped = entries.length - dedupedEntries.length;
+
+  if (dedupedEntries.length === 0) {
+    return {
+      slug: sub.slug,
+      status: 'no-op',
+      reason: `all ${entries.length} entries already present in pending-review (entry-dedup)`,
+      entries_added: 0,
+      duplicates_skipped: duplicatesSkipped
+    };
+  }
+
+  const newJsonlLines = dedupedEntries.map(e => JSON.stringify(e)).join('\n');
   const updatedContent = existingContent === '' || existingContent.endsWith('\n')
     ? existingContent + newJsonlLines + '\n'
     : existingContent + '\n' + newJsonlLines + '\n';
@@ -167,7 +199,7 @@ async function processSubscriber(sub, newBlocks, runTimestamp) {
     config.pending_review_path,
     updatedContent,
     existing?.sha || null,
-    `cc-watcher: append ${entries.length} entr${entries.length === 1 ? 'y' : 'ies'} from ${versionsLabel}`,
+    `cc-watcher: append ${dedupedEntries.length} entr${dedupedEntries.length === 1 ? 'y' : 'ies'} from ${versionsLabel}`,
     pat
   );
 
@@ -185,7 +217,7 @@ async function processSubscriber(sub, newBlocks, runTimestamp) {
     reviewed_at: runTimestamp,
     last_seen_version_at_review: latestVersion,
     session: 'cc-watcher-automated',
-    entries_added: entries.length,
+    entries_added: dedupedEntries.length,
     trigger: `daily-fetch picked up ${newBlocks.length} new version(s): ${versionsLabel}`
   });
 
@@ -202,9 +234,10 @@ async function processSubscriber(sub, newBlocks, runTimestamp) {
   return {
     slug: sub.slug,
     status: 'updated',
-    entries_added: entries.length,
-    pending: entries.filter(e => e.status === 'pending').length,
-    acknowledged: entries.filter(e => e.status === 'acknowledged').length,
+    entries_added: dedupedEntries.length,
+    pending: dedupedEntries.filter(e => e.status === 'pending').length,
+    acknowledged: dedupedEntries.filter(e => e.status === 'acknowledged').length,
+    duplicates_skipped: duplicatesSkipped,
     versions: newBlocks.map(b => b.version)
   };
 }
