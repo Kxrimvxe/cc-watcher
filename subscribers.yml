@@ -15,3 +15,7 @@ subscribers:
     repo: Kxrimvxe/tcg-portal
     branch: main
     config_path: .cc-watcher.yml
+  - slug: compass
+    repo: Kxrimvxe/compass
+    branch: main
+    config_path: .cc-watcher.yml
