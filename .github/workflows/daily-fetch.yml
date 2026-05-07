@@ -42,6 +42,7 @@ jobs:
         id: process
         env:
           SUBSCRIBER_PAT_TCG_PORTAL: ${{ secrets.SUBSCRIBER_PAT_TCG_PORTAL }}
+          SUBSCRIBER_PAT_COMPASS: ${{ secrets.SUBSCRIBER_PAT_COMPASS }}
           FORCE_BASELINE: ${{ inputs.force_baseline }}
         run: node scripts/fetch-and-process.mjs
 
