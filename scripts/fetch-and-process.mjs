@@ -210,7 +210,13 @@ async function processSubscriber(sub, newBlocks, runTimestamp) {
     : { schema_version: 'v1.0', review_history: [] };
   const latestVersion = newBlocks[newBlocks.length - 1].version;
   lastReviewed.tcg_changelog_review = runTimestamp;
-  lastReviewed.tcg_pending_review_last_processed = runTimestamp;
+  // T045 fix 2026-05-08: do NOT bump <project>_pending_review_last_processed —
+  // that field is operator-only per TCG ASD adapter v2.8 contract. cc-watcher
+  // tracks its own progress via last_seen_version_at_review + review_history.
+  // Pre-fix bug: bumping this field to runTimestamp made it equal to the
+  // discovered_at of newly-appended entries; subscribers' session-open
+  // auto-surface filter (discovered_at > <project>_pending_review_last_processed)
+  // is strict-`>`, so equal timestamps yielded zero net-new pending entries.
   lastReviewed.last_seen_version_at_review = latestVersion;
   lastReviewed.review_history = lastReviewed.review_history || [];
   lastReviewed.review_history.push({
