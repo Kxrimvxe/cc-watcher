@@ -1081,3 +1081,4 @@
 {"ts":"2026-08-04T11:38:08.502Z","baseline_before":"2.1.221","latest_after":"2.1.221","new_versions":[],"subscribers":[],"duration_ms":231}
 {"ts":"2026-08-04T13:22:16.334Z","baseline_before":"2.1.221","latest_after":"2.1.221","new_versions":[],"subscribers":[],"duration_ms":223}
 {"ts":"2026-08-04T15:43:21.477Z","baseline_before":"2.1.221","latest_after":"2.1.221","new_versions":[],"subscribers":[],"duration_ms":254}
+{"ts":"2026-08-04T17:21:13.114Z","baseline_before":"2.1.221","latest_after":"2.1.221","new_versions":[],"subscribers":[],"duration_ms":412}
