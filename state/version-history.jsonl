@@ -2082,3 +2082,4 @@
 {"ts":"2026-10-13T21:13:11.130Z","baseline_before":"2.1.296","latest_after":"2.1.296","new_versions":[],"subscribers":[],"duration_ms":405}
 {"ts":"2026-10-14T00:18:03.194Z","baseline_before":"2.1.296","latest_after":"2.1.296","new_versions":[],"subscribers":[],"duration_ms":259}
 {"ts":"2026-10-14T05:08:07.765Z","baseline_before":"2.1.296","latest_after":"2.1.299","new_versions":["2.1.299"],"subscribers":[{"slug":"tcg-portal","status":"updated","entries_added":190,"pending":56,"acknowledged":134,"duplicates_skipped":0,"versions":["2.1.299"]},{"slug":"compass","status":"updated","entries_added":190,"pending":66,"acknowledged":124,"duplicates_skipped":0,"versions":["2.1.299"]}],"duration_ms":8018}
+{"ts":"2026-10-14T10:08:42.704Z","baseline_before":"2.1.299","latest_after":"2.1.299","new_versions":[],"subscribers":[],"duration_ms":703}
